@@ -34,8 +34,11 @@ DEFAULT_VARS["OVERRIDE_HOSTNAME"]="${OVERRIDE_HOSTNAME}"
 #
 # Example: KEY="VALUE"
 ##########################################################################
-HOSTNAME="$(hostname -f)"
-DOMAINNAME="$(hostname -d)"
+# HERE
+#HOSTNAME="$(hostname -f)"
+#DOMAINNAME="$(hostname -d)"
+HOSTNAME="yuma.carii.biz"
+DOMAINNAME="carii.biz"
 ##########################################################################
 # << GLOBAL VARS
 ##########################################################################
@@ -338,10 +341,12 @@ function _check_hostname() {
 	if [[ ! -z ${DEFAULT_VARS["OVERRIDE_HOSTNAME"]} ]]; then
 		export HOSTNAME=${DEFAULT_VARS["OVERRIDE_HOSTNAME"]}
 		export DOMAINNAME=$(echo $HOSTNAME | sed s/[^.]*.//)
+		notify 'inf' "Not set so this should not be displayed"
 	fi
 
 	if ( ! echo $HOSTNAME | grep -E '^(\S+[.]\S+)$' > /dev/null ); then
 		notify 'err' "Setting hostname/domainname is required"
+		notify 'inf' "Current values for host/domain: $HOSTNAME/$DOMAINNAME"
 		return 1
 	else
 		notify 'inf' "Domain has been set to $DOMAINNAME"
